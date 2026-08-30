@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { quizService } from "@/services";
+import { shuffleQuizQuestions } from "@/lib/shuffleQuiz";
 import type { QuizQuestion, ApiError } from "@/types";
 
 interface UseQuizQuestionsResponse {
@@ -30,7 +31,7 @@ export function useQuizQuestions(courseId: string): UseQuizQuestionsResponse {
       const response = await quizService.getQuizQuestions(courseId);
 
       if (response.success && response.data) {
-        setData(response.data.questions as QuizQuestion[]);
+        setData(shuffleQuizQuestions(response.data.questions as QuizQuestion[]));
       } else if (response.error) {
         setError(response.error);
       }

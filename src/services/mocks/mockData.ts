@@ -1,5 +1,5 @@
 import type { CourseListResponse, CourseDetailResponse, QuizQuestion } from "@/types";
-import type { QuizQuestionsResponse } from "@/types/quiz";
+import type { QuizQuestionsResponse, GameQuestion } from "@/types/quiz";
 
 export const mockCourseList: CourseListResponse = {
   courses: [
@@ -62,17 +62,38 @@ const bab1Questions: QuizQuestion[] = [
 const bab2Questions: QuizQuestion[] = [
   {
     id: "bab2-q1",
-    question: "Apa fokus utama politik Indonesia setelah proklamasi?",
-    options: { A: "Mempertahankan kemerdekaan", B: "Membubarkan pemerintahan" },
+    question: "Siapakah presiden pertama Republik Indonesia?",
+    options: { A: "Soekarno", B: "Ahmad Yani" },
     correctAnswer: "A",
-    explanation: "Setelah proklamasi, bangsa Indonesia berfokus mempertahankan kemerdekaan dan membangun pemerintahan.",
+    explanation: "Soekarno diangkat menjadi presiden pertama RI berdasarkan UUD 1945 pasal yang mengatur kepala negara."
   },
   {
     id: "bab2-q2",
-    question: "Badan yang mengesahkan UUD 1945 adalah...",
-    options: { A: "PPKI", B: "VOC" },
+    question: "Kapan Konferensi Meja Bundar (KMB) dilaksanakan yang mengakhiri kedaulatan Belanda?",
+    options: { A: "Tahun 1949", B: "Tahun 1946" },
     correctAnswer: "A",
-    explanation: "PPKI mengesahkan UUD 1945 pada 18 Agustus 1945.",
+    explanation: "KMB dilaksanakan pada tahun 1949 di Den Haag dan secara resmi mengakui kedaulatan Indonesia."
+  },
+  {
+    id: "bab2-q3",
+    question: "Siapakah yang menjadi perdana menteri pertama Indonesia?",
+    options: { A: "Sutan Sjahrir", B: "Amir Sjarifuddin" },
+    correctAnswer: "A",
+    explanation: "Sutan Sjahrir diangkat sebagai perdana menteri pertama Indonesia pada November 1945."
+  },
+  {
+    id: "bab2-q4",
+    question: "Peristiwa 10 November di Surabaya kini diperingati sebagai hari apa?",
+    options: { A: "Hari Pahlawan", B: "Hari Kemerdekaan" },
+    correctAnswer: "A",
+    explanation: "Pertempuran hebat di Surabaya pada 10 November 1945 kini diperingati sebagai Hari Pahlawan setiap tahun."
+  },
+  {
+    id: "bab2-q5",
+    question: "Apa nama badan legislatif sementara yang dibentuk setelah proklamasi untuk menjalankan tugas DPR?",
+    options: { A: "KNIP", B: "BPUPKI" },
+    correctAnswer: "A",
+    explanation: "KNIP (Komite Nasional Indonesia Pusat) dibentuk sebagai badan legislatif sementara sebelum DPR terbentuk."
   },
 ];
 
@@ -148,6 +169,89 @@ export const mockQuizQuestionsByCourse: Record<string, QuizQuestionsResponse> = 
 
 export const mockQuizQuestions = mockQuizQuestionsByCourse["bab-1"];
 
-export const mockGameQuestions = [...mockQuizQuestions.questions].sort(
+// ── Game questions per course (soal kuis interaktif gestur) ──────
+const bab1GameQuestions: GameQuestion[] = [
+  {
+    id: "bab1-gq1",
+    question: "Kapan proklamasi kemerdekaan Indonesia dikumandangkan?",
+    options: { A: "17 Agustus 1945", B: "16 Agustus 1945" },
+    correctAnswer: "A",
+    explanation: "17 Agustus 1945 adalah tanggal proklamasi kemerdekaan Indonesia."
+  },
+  {
+    id: "bab1-gq2",
+    question: "Di mana proklamasi kemerdekaan dibacakan?",
+    options: { A: "Jl. Pegangsaan Timur 56", B: "Lapangan IKADA" },
+    correctAnswer: "A",
+    explanation: "Proklamasi dibacakan di kediaman Soekarno di Jl. Pegangsaan Timur 56, Jakarta."
+  },
+  {
+    id: "bab1-gq3",
+    question: "Siapa yang mengetik naskah proklamasi?",
+    options: { A: "Sayuti Melik", B: "Ahmad Soebardjo" },
+    correctAnswer: "A",
+    explanation: "Sayuti Melik mengetik naskah proklamasi setelah dirumuskan bersama."
+  },
+  {
+    id: "bab1-gq4",
+    question: "Siapa yang mendampingi Soekarno saat proklamasi?",
+    options: { A: "Mohammad Hatta", B: "Sutan Sjahrir" },
+    correctAnswer: "A",
+    explanation: "Mohammad Hatta mendampingi Soekarno saat pembacaan proklamasi."
+  },
+  {
+    id: "bab1-gq5",
+    question: "Peristiwa Rengasdengklok bertujuan untuk...",
+    options: { A: "Mendesak proklamasi segera dilakukan", B: "Menyusun kabinet pertama" },
+    correctAnswer: "A",
+    explanation: "Golongan muda membawa Soekarno-Hatta ke Rengasdengklok agar proklamasi segera dilaksanakan."
+  },
+];
+
+const bab2GameQuestions: GameQuestion[] = [
+  {
+    id: "bab2-gq1",
+    question: "Siapakah wakil presiden pertama Republik Indonesia?",
+    options: { A: "Mohammad Hatta", B: "Sutan Sjahrir" },
+    correctAnswer: "A",
+    explanation: "Mohammad Hatta diangkat menjadi wakil presiden pertama RI mendampingi Soekarno."
+  },
+  {
+    id: "bab2-gq2",
+    question: "Apa nama perjanjian linggarjati yang ditandatangani antara RI dan Belanda?",
+    options: { A: "Pengakuan de facto wilayah RI", B: "Pengakuan kedaulatan penuh Belanda" },
+    correctAnswer: "A",
+    explanation: "Perjanjian Linggarjati (1946) mengakui secara de facto wilayah Republik Indonesia di Jawa, Sumatra, dan Madura."
+  },
+  {
+    id: "bab2-gq3",
+    question: "Siapakah tokoh yang memimpin pertempuran melawan Belanda di Surabaya?",
+    options: { A: "Bung Tomo", B: "Sudirman" },
+    correctAnswer: "A",
+    explanation: "Bung Tomo dikenal sebagai pemimpin semangat perjuangan rakyat Surabaya dalam pertempuran 10 November."
+  },
+  {
+    id: "bab2-gq4",
+    question: "Apa nama panglima besar pertama militer Indonesia setelah kemerdekaan?",
+    options: { A: "Jenderal Soedirman", B: "Jenderal Gatot Subroto" },
+    correctAnswer: "A",
+    explanation: "Jenderal Soedirman diangkat menjadi panglima besar TNI dan memimpin perang gerilya melawan Belanda."
+  },
+  {
+    id: "bab2-gq5",
+    question: "Kapan Belanda mengakui kedaulatan Indonesia secara penuh setelah KMB?",
+    options: { A: "27 Desember 1949", B: "17 Agustus 1949" },
+    correctAnswer: "A",
+    explanation: "Pada 27 Desember 1949, secara resmi Belanda menyerahkan kedaulatan penuh kepada Indonesia setelah KMB."
+  },
+];
+
+export const mockGameQuestionsByCourse: Record<string, GameQuestion[]> = {
+  "bab-1": bab1GameQuestions,
+  "bab-2": bab2GameQuestions,
+};
+
+// Default: shuffle bab-1 questions for backward compatibility
+export const mockGameQuestions = [...bab1GameQuestions].sort(
   () => Math.random() - 0.5,
 );

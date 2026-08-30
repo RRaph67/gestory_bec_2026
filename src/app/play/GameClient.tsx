@@ -3,6 +3,7 @@
 import React, {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 import { useGameQuestions } from "@/hooks";
 import { gameService } from "@/services";
+import { shuffleGameQuestions } from "@/lib/shuffleQuiz";
 
 // =====================================================
 // DEFAULT BANK SOAL (Fallback jika API error)
@@ -24,43 +26,43 @@ import { gameService } from "@/services";
 const DEFAULT_BANK_SOAL = [
   {
     id: "1",
-    question: "Kapan proklamasi kemerdekaan Indonesia dikumandangkan?",
-    options: { A: "17 Agustus 1945", B: "16 Agustus 1945" },
-    correctAnswer: "A",
-    explanation:
-      "Tepat sekali! Kemerdekaan Indonesia diproklamasikan pada hari Jumat, 17 Agustus 1945.",
-  },
-  {
-    id: "2",
-    question: "Di mana lokasi pembacaan teks proklamasi?",
-    options: { A: "Jl. Pegangsaan Timur 56", B: "Rengasdengklok" },
-    correctAnswer: "A",
-    explanation:
-      "Benar! Pembacaan teks proklamasi dilaksanakan di halaman rumah Soekarno, Jalan Pegangsaan Timur No. 56, Jakarta.",
-  },
-  {
-    id: "3",
-    question: "Apa tujuan utama peristiwa Rengasdengklok?",
-    options: { A: "Mendesak proklamasi", B: "Berunding dengan Jepang" },
-    correctAnswer: "A",
-    explanation:
-      "Betul! Golongan muda mendesak Soekarno dan Hatta agar segera memproklamasikan kemerdekaan tanpa pengaruh Jepang.",
-  },
-  {
-    id: "4",
-    question: "Siapa yang mengetik naskah proklamasi?",
-    options: { A: "Sayuti Melik", B: "S.K. Trimurti" },
+    question: "Siapa yang mengetik naskah proklamasi kemerdekaan?",
+    options: { A: "Sayuti Melik", B: "Sutan Sjahrir" },
     correctAnswer: "A",
     explanation:
       "Tepat! Sayuti Melik mengetik naskah proklamasi yang telah disusun oleh Soekarno, Hatta, dan Ahmad Soebardjo.",
   },
   {
-    id: "5",
-    question: "Siapa penjahit bendera Merah Putih pertama?",
-    options: { A: "Ibu Fatmawati", B: "Raden Ajeng Kartini" },
+    id: "2",
+    question: "Apa isi dari teks proklamasi?",
+    options: { A: "Pengakuan kedaulatan rakyat Indonesia", B: "Perjanjian damai dengan Belanda" },
+    correctAnswer: "A",
+    explanation:
+      "Benar! Teks proklamasi berisi pengakuan kedaulatan rakyat Indonesia atas tanah air Indonesia.",
+  },
+  {
+    id: "3",
+    question: "Siapa yang menjahit bendera Merah Putih pertama kali?",
+    options: { A: "Ibu Fatmawati", B: "R.A. Kartini" },
     correctAnswer: "A",
     explanation:
       "Luar biasa! Ibu Fatmawati menjahit bendera pusaka yang dikibarkan saat proklamasi 17 Agustus 1945.",
+  },
+  {
+    id: "4",
+    question: "Kapan UUD 1945 pertama kali disahkan?",
+    options: { A: "18 Agustus 1945", B: "17 Agustus 1945" },
+    correctAnswer: "A",
+    explanation:
+      "Betul! UUD 1945 disahkan oleh PPKI pada tanggal 18 Agustus 1945, sehari setelah proklamasi.",
+  },
+  {
+    id: "5",
+    question: "Apa nama organisasi yang mengesahkan UUD 1945?",
+    options: { A: "PPKI", B: "BPUPKI" },
+    correctAnswer: "A",
+    explanation:
+      "Tepat! PPKI (Panitia Persiapan Kemerdekaan Indonesia) yang mengesahkan UUD 1945.",
   },
 ];
 
@@ -79,11 +81,22 @@ interface FeedbackData {
 // COMPONENT
 // =====================================================
 export default function GamePage() {
+  // ── Read courseId from localStorage (sync, set by GameBoard before navigating) ──
+  const courseId = useMemo(() => {
+    try {
+      return localStorage.getItem("gestory_last_course") || undefined;
+    } catch {
+      return undefined;
+    }
+  }, []);
+
   // ── Fetch game questions dari service ────────────────────────
-  const { data: questionsFromApi, loading: questionsLoading, error: questionsError } = useGameQuestions();
+  const { data: questionsFromApi, loading: questionsLoading, error: questionsError } = useGameQuestions(courseId);
   
   // Use fetched questions atau fallback ke DEFAULT jika kosong
-  const BANK_SOAL = questionsFromApi && questionsFromApi.length > 0 ? questionsFromApi : DEFAULT_BANK_SOAL;
+  // Shuffle both to ensure correct answer is not always A
+  const shuffledDefault = useMemo(() => shuffleGameQuestions(DEFAULT_BANK_SOAL), []);
+  const BANK_SOAL = questionsFromApi && questionsFromApi.length > 0 ? questionsFromApi : shuffledDefault;
 
   // ── UI State (drives rendering) ──────────────────────────────
   const [gameState, setGameState] = useState<GameState>("HUNTING");
@@ -98,6 +111,8 @@ export default function GamePage() {
   const [playerName, setPlayerName] = useState("");
   const [isSubmittingScore, setIsSubmittingScore] = useState(false);
   const [scoreSubmitted, setScoreSubmitted] = useState(false);
+
+
 
   // ── Refs for mutable values accessed inside MediaPipe callbacks ──
   // These shadow the state values so callbacks always see the latest
@@ -123,8 +138,11 @@ export default function GamePage() {
 
   const currentQuestion = BANK_SOAL[questionIndex] || BANK_SOAL[0] || DEFAULT_BANK_SOAL[0];
 
-  // ── Answer checking ──────────────────────────────────────────
-  const checkAnswer = useCallback((answer: string) => {
+  // ── Answer checking (stored in ref so handleShoot & MediaPipe always see latest) ──
+  const checkAnswerRef = useRef<(answer: string) => void>(() => {});
+
+  // Update the ref on every render with the latest BANK_SOAL
+  checkAnswerRef.current = (answer: string) => {
     const q = BANK_SOAL[questionIndexRef.current];
     const isCorrect = answer === q.correctAnswer;
 
@@ -133,7 +151,7 @@ export default function GamePage() {
     setFeedback({
       isCorrect,
       explanation: q.explanation,
-      correctAnswer: q.correctAnswer === "A" ? q.options.A : q.options.B,
+      correctAnswer: q.options[q.correctAnswer] || Object.values(q.options)[0],
     });
     setGameState("FEEDBACK");
     gameStateRef.current = "FEEDBACK";
@@ -151,7 +169,7 @@ export default function GamePage() {
         gameStateRef.current = "FINISHED";
       }
     }, 4000);
-  }, [BANK_SOAL]);
+  };
 
   // ── Helper: hit-test a ref element ──────────────────────────
   const hits = (ref: React.RefObject<HTMLElement | null>, x: number, y: number) => {
@@ -160,14 +178,15 @@ export default function GamePage() {
     return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
   };
 
-  // ── Shoot handler ─────────────────────────────────────────────
+  // ── Shoot handler (stable ref, no stale closures) ────────────
   const handleShoot = useCallback(
     (x: number, y: number) => {
       const state = gameStateRef.current;
 
       // ── Back button is always pinch-clickable (any state) ──
       if (hits(backBtnRef, x, y)) {
-        window.location.href = "/";
+        const backCourseId = localStorage.getItem("gestory_last_course");
+        window.location.href = backCourseId ? `/course/${backCourseId}` : "/materi";
         return;
       }
 
@@ -225,7 +244,7 @@ export default function GamePage() {
           if (ref) {
             const rect = ref.getBoundingClientRect();
             if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-              checkAnswer(key);
+              checkAnswerRef.current(key);
               break;
             }
           }
@@ -236,15 +255,16 @@ export default function GamePage() {
           handleRestart();
           return;
         }
-        // ── Go home ────────────────────────────────────────────
-        if (hits(homeBtnRef, x, y)) {
-          window.location.href = "/";
-          return;
-        }
+      // ── Go home ────────────────────────────────────────────
+      if (hits(homeBtnRef, x, y)) {
+        const backCourseId = localStorage.getItem("gestory_last_course");
+        window.location.href = backCourseId ? `/course/${backCourseId}` : "/materi";
+        return;
+      }
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [checkAnswer]
+    []
   );
 
   // ── MediaPipe setup — runs ONCE only ─────────────────────────
@@ -415,7 +435,7 @@ export default function GamePage() {
       <div className="absolute top-0 w-full px-8 py-6 flex justify-between items-center z-40 bg-linear-to-b from-black/60 to-transparent">
         <div className="flex items-center gap-4">
           <Link
-            href="/"
+            href={courseId ? `/course/${courseId}` : "/materi"}
             id="back-btn"
             ref={backBtnRef}
             className="p-3 bg-white/10 hover:bg-white/20 rounded-2xl backdrop-blur-md transition-all cursor-pointer"
@@ -745,12 +765,12 @@ export default function GamePage() {
                 🔄 Main Lagi
               </button>
               <Link
-                href="/"
+                href={courseId ? `/course/${courseId}` : "/materi"}
                 id="home-btn"
                 ref={homeBtnRef}
                 className="flex-1 border-2 border-slate-200 hover:bg-slate-50 text-slate-700 px-8 py-5 rounded-2xl font-black text-xl transition-all text-center flex items-center justify-center cursor-pointer"
               >
-                🏠 Beranda
+                📖 Kembali ke Materi
               </Link>
             </div>
           </div>

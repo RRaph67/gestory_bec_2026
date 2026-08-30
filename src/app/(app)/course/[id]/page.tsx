@@ -120,7 +120,7 @@ export default function CourseDetailPage() {
 
         {/* Game Button */}
         <div className="mb-16">
-          <GameBoard />
+          <GameBoard courseId={courseId} />
         </div>
 
         {/* Material & Quiz Section */}

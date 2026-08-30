@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, AuthProvider } from "@/hooks/useAuth";
 
 // Load the heavy game component with SSR disabled.
 const GameClient = dynamic(() => import("./GameClient"), { ssr: false });
@@ -41,5 +41,9 @@ export default function Page() {
 
   if (!user) return null;
 
-  return <GameClient />;
+  return (
+    <AuthProvider>
+      <GameClient />
+    </AuthProvider>
+  );
 }

@@ -8,6 +8,7 @@
 
 import { useEffect, useState } from "react";
 import { gameService } from "@/services";
+import { shuffleGameQuestions } from "@/lib/shuffleQuiz";
 import type { GameQuestion, ApiError } from "@/types";
 
 interface UseGameQuestionsResponse {
@@ -17,7 +18,7 @@ interface UseGameQuestionsResponse {
   refetch: () => Promise<void>;
 }
 
-export function useGameQuestions(): UseGameQuestionsResponse {
+export function useGameQuestions(courseId?: string): UseGameQuestionsResponse {
   const [data, setData] = useState<GameQuestion[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<ApiError | null>(null);
@@ -27,10 +28,10 @@ export function useGameQuestions(): UseGameQuestionsResponse {
     setError(null);
 
     try {
-      const response = await gameService.getGameQuestions();
+      const response = await gameService.getGameQuestions(courseId);
 
       if (response.success && response.data) {
-        setData(response.data.questions);
+        setData(shuffleGameQuestions(response.data.questions));
       } else if (response.error) {
         setError(response.error);
       }
@@ -46,7 +47,7 @@ export function useGameQuestions(): UseGameQuestionsResponse {
 
   useEffect(() => {
     refetch();
-  }, []);
+  }, [courseId]);
 
   return {
     data,

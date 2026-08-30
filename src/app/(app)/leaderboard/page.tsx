@@ -83,21 +83,21 @@ export default function LeaderboardPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-24">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-12 px-6 shadow-md mb-12">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-3">
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16 px-6 shadow-md mb-12">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="space-y-4">
             <Link
               href="/materi"
-              className="inline-flex items-center gap-1.5 text-blue-100 hover:text-white transition-colors text-sm font-bold bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-xs"
+              className="inline-flex items-center gap-2 text-blue-100 hover:text-white transition-colors text-base font-bold bg-white/10 px-4 py-2 rounded-full backdrop-blur-xs"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-5 h-5" />
               Kembali ke Materi
             </Link>
-            <h1 className="text-3xl md:text-4xl font-black flex items-center gap-2">
-              <Trophy className="w-9 h-9 fill-yellow-400 text-yellow-400" />
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black flex items-center gap-3">
+              <Trophy className="w-12 h-12 md:w-14 md:h-14 fill-yellow-400 text-yellow-400" />
               Papan Peringkat Misi
             </h1>
-            <p className="text-blue-100 text-sm md:text-base font-medium max-w-xl">
+            <p className="text-blue-100 text-base md:text-lg font-medium max-w-xl leading-relaxed">
               Ayo selesaikan kuis dan dapatkan skor terbaik di setiap materi sejarah. Buktikan bahwa kamu adalah penjelajah terbaik!
             </p>
           </div>
@@ -105,9 +105,9 @@ export default function LeaderboardPage() {
           <button
             onClick={fetchLeaderboard}
             disabled={loading}
-            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold px-4 py-2.5 rounded-2xl border border-white/20 transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+            className="flex items-center gap-3 bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3.5 rounded-2xl border border-white/20 transition-all active:scale-95 disabled:opacity-50 cursor-pointer text-base"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw className={`w-5 h-5 ${loading ? "animate-spin" : ""}`} />
             Segarkan
           </button>
         </div>
@@ -169,16 +169,16 @@ export default function LeaderboardPage() {
                 {/* 2nd Place */}
                 {topThree[1] ? (
                   <div className="flex flex-col items-center">
-                    <div className={`w-full ${getPodiumStyles(2).cardBg} border-2 rounded-t-4xl px-4 py-6 text-center flex flex-col items-center justify-end ${getPodiumStyles(2).height} shadow-lg transition-transform hover:-translate-y-1 duration-300 relative`}>
-                      <span className="absolute -top-5 w-10 h-10 rounded-full bg-slate-400 text-white flex items-center justify-center font-black border-4 border-[#F8FAFC] text-sm">
+                    <div className={`w-full ${getPodiumStyles(2).cardBg} border-2 rounded-t-4xl px-5 py-8 text-center flex flex-col items-center justify-end ${getPodiumStyles(2).height} shadow-lg transition-transform hover:-translate-y-1 duration-300 relative`}>
+                      <span className="absolute -top-6 w-12 h-12 rounded-full bg-slate-400 text-white flex items-center justify-center font-black border-4 border-[#F8FAFC] text-base">
                         2
                       </span>
-                      <Medal className="w-10 h-10 text-slate-400 mb-2" />
-                      <h3 className="font-extrabold text-slate-800 text-xs md:text-sm truncate w-full">
+                      <Medal className="w-12 h-12 text-slate-400 mb-3" />
+                      <h3 className="font-extrabold text-slate-800 text-sm md:text-base truncate w-full">
                         {topThree[1].playerName}
                       </h3>
-                      <p className="text-blue-600 font-black text-sm md:text-base mt-1">
-                        {topThree[1].score} <span className="text-[10px] text-slate-500 font-bold">XP</span>
+                      <p className="text-blue-600 font-black text-base md:text-lg mt-1">
+                        {topThree[1].score} <span className="text-xs text-slate-500 font-bold">XP</span>
                       </p>
                     </div>
                   </div>
@@ -189,18 +189,18 @@ export default function LeaderboardPage() {
                 {/* 1st Place */}
                 {topThree[0] ? (
                   <div className="flex flex-col items-center z-10">
-                    <div className={`w-full ${getPodiumStyles(1).cardBg} border-2 rounded-t-4xl px-4 py-6 text-center flex flex-col items-center justify-end ${getPodiumStyles(1).height} shadow-xl transition-transform hover:-translate-y-1 duration-300 relative`}>
-                      <div className="absolute -top-7 animate-bounce duration-1000">
-                        <Crown className="w-8 h-8 text-yellow-500 fill-yellow-400" />
+                    <div className={`w-full ${getPodiumStyles(1).cardBg} border-2 rounded-t-4xl px-5 py-8 text-center flex flex-col items-center justify-end ${getPodiumStyles(1).height} shadow-xl transition-transform hover:-translate-y-1 duration-300 relative`}>
+                      <div className="absolute -top-8 animate-bounce duration-1000">
+                        <Crown className="w-10 h-10 text-yellow-500 fill-yellow-400" />
                       </div>
-                      <span className="absolute -top-5 w-11 h-11 rounded-full bg-yellow-500 text-white flex items-center justify-center font-black border-4 border-[#F8FAFC] text-base">
+                      <span className="absolute -top-6 w-13 h-13 rounded-full bg-yellow-500 text-white flex items-center justify-center font-black border-4 border-[#F8FAFC] text-lg">
                         1
                       </span>
-                      <Trophy className="w-12 h-12 text-yellow-500 fill-yellow-100 mb-2" />
-                      <h3 className="font-black text-slate-800 text-sm md:text-base truncate w-full">
+                      <Trophy className="w-14 h-14 text-yellow-500 fill-yellow-100 mb-3" />
+                      <h3 className="font-black text-slate-800 text-base md:text-lg truncate w-full">
                         {topThree[0].playerName}
                       </h3>
-                      <p className="text-blue-600 font-black text-base md:text-lg mt-1">
+                      <p className="text-blue-600 font-black text-lg md:text-xl mt-1">
                         {topThree[0].score} <span className="text-xs text-slate-500 font-bold">XP</span>
                       </p>
                     </div>
@@ -212,16 +212,16 @@ export default function LeaderboardPage() {
                 {/* 3rd Place */}
                 {topThree[2] ? (
                   <div className="flex flex-col items-center">
-                    <div className={`w-full ${getPodiumStyles(3).cardBg} border-2 rounded-t-4xl px-4 py-6 text-center flex flex-col items-center justify-end ${getPodiumStyles(3).height} shadow-lg transition-transform hover:-translate-y-1 duration-300 relative`}>
-                      <span className="absolute -top-5 w-10 h-10 rounded-full bg-amber-600 text-white flex items-center justify-center font-black border-4 border-[#F8FAFC] text-sm">
+                    <div className={`w-full ${getPodiumStyles(3).cardBg} border-2 rounded-t-4xl px-5 py-8 text-center flex flex-col items-center justify-end ${getPodiumStyles(3).height} shadow-lg transition-transform hover:-translate-y-1 duration-300 relative`}>
+                      <span className="absolute -top-6 w-12 h-12 rounded-full bg-amber-600 text-white flex items-center justify-center font-black border-4 border-[#F8FAFC] text-base">
                         3
                       </span>
-                      <Medal className="w-10 h-10 text-amber-600 mb-2" />
-                      <h3 className="font-extrabold text-slate-800 text-xs md:text-sm truncate w-full">
+                      <Medal className="w-12 h-12 text-amber-600 mb-3" />
+                      <h3 className="font-extrabold text-slate-800 text-sm md:text-base truncate w-full">
                         {topThree[2].playerName}
                       </h3>
-                      <p className="text-blue-600 font-black text-sm md:text-base mt-1">
-                        {topThree[2].score} <span className="text-[10px] text-slate-500 font-bold">XP</span>
+                      <p className="text-blue-600 font-black text-base md:text-lg mt-1">
+                        {topThree[2].score} <span className="text-xs text-slate-500 font-bold">XP</span>
                       </p>
                     </div>
                   </div>
@@ -234,9 +234,9 @@ export default function LeaderboardPage() {
             {/* List for ranks 4-10 */}
             {otherRanks.length > 0 && (
               <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-                <div className="px-6 py-4 bg-slate-50/70 border-b border-slate-100">
-                  <h2 className="font-extrabold text-slate-800 flex items-center gap-2 text-sm md:text-base">
-                    <Award className="w-5 h-5 text-blue-500" />
+                <div className="px-8 py-5 bg-slate-50/70 border-b border-slate-100">
+                  <h2 className="font-extrabold text-slate-800 flex items-center gap-3 text-lg md:text-xl">
+                    <Award className="w-6 h-6 text-blue-500" />
                     Penjelajah Peringkat Lainnya
                   </h2>
                 </div>
@@ -244,19 +244,19 @@ export default function LeaderboardPage() {
                   {otherRanks.map((item) => (
                     <div
                       key={item.rank}
-                      className="px-6 py-4 flex items-center justify-between hover:bg-slate-50/40 transition-colors"
+                      className="px-8 py-5 flex items-center justify-between hover:bg-slate-50/40 transition-colors"
                     >
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-5">
                         {/* Rank Badge */}
-                        <span className="w-8 h-8 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-black text-sm">
+                        <span className="w-10 h-10 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center font-black text-base">
                           {item.rank}
                         </span>
                         <div>
-                          <h4 className="font-bold text-slate-800 text-sm md:text-base">
+                          <h4 className="font-bold text-slate-800 text-base md:text-lg">
                             {item.playerName}
                           </h4>
-                          <span className="flex items-center gap-1 text-[11px] text-slate-400 mt-0.5">
-                            <Calendar className="w-3.5 h-3.5" />
+                          <span className="flex items-center gap-1.5 text-xs text-slate-400 mt-0.5">
+                            <Calendar className="w-4 h-4" />
                             {new Date(item.date).toLocaleDateString("id-ID", {
                               day: "numeric",
                               month: "short",
@@ -266,10 +266,10 @@ export default function LeaderboardPage() {
                         </div>
                       </div>
                       <div className="text-right">
-                        <span className="font-black text-blue-600 text-base md:text-lg">
+                        <span className="font-black text-blue-600 text-lg md:text-xl">
                           {item.score}
                         </span>
-                        <span className="text-[10px] text-slate-400 font-bold ml-1">XP</span>
+                        <span className="text-xs text-slate-400 font-bold ml-1">XP</span>
                       </div>
                     </div>
                   ))}

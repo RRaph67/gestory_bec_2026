@@ -4,15 +4,17 @@
  */
 
 import { apiClient, IS_MOCK_MODE } from "./api";
-import { mockGameQuestions } from "./mocks/mockData";
+import { mockGameQuestions, mockGameQuestionsByCourse } from "./mocks/mockData";
 import type { ApiResponse, GameScore, QuizQuestionsResponse } from "@/types";
 
-// Backend has: GET /api/v1/game/questions -> returns QuizQuestionsResponse shape
-export async function getGameQuestions(): Promise<ApiResponse<QuizQuestionsResponse>> {
+// Backend has: GET /api/v1/game/questions/:courseId -> returns QuizQuestionsResponse shape
+export async function getGameQuestions(courseId?: string): Promise<ApiResponse<QuizQuestionsResponse>> {
   if (IS_MOCK_MODE) {
-    return Promise.resolve({ success: true, data: { questions: mockGameQuestions, total: mockGameQuestions.length } });
+    const questions = courseId ? (mockGameQuestionsByCourse[courseId] || mockGameQuestions) : mockGameQuestions;
+    return Promise.resolve({ success: true, data: { questions, total: questions.length } });
   }
-  return apiClient.get<ApiResponse<QuizQuestionsResponse>>(`/api/v1/game/questions`);
+  const url = courseId ? `/api/v1/game/questions/${courseId}` : `/api/v1/game/questions`;
+  return apiClient.get<ApiResponse<QuizQuestionsResponse>>(url);
 }
 
 export async function submitGameScore(scoreData: {
