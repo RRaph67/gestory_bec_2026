@@ -115,7 +115,7 @@ export default function LandingPage() {
             {/* Main illustration — plain img so backgroundColor applies directly to the element */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/assets/kids_dancing.png"
+              src="/assets/images/atas1.png"
               alt="Anak-anak belajar dengan gembira menggunakan Gestory"
               style={{ backgroundColor: '#ffffff' }}
               className="relative z-10 w-full max-w-lg object-contain rounded-3xl"
@@ -259,7 +259,7 @@ export default function LandingPage() {
                   <div className="absolute inset-0 bg-linear-to-br from-blue-50 to-indigo-50 rounded-4xl pointer-events-none" />
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/assets/kids_friends.png"
+                    src="/assets/images/atas2.png"
                     alt="Teman-teman belajar bersama dengan Gestory"
                     style={{ backgroundColor: '#ffffff' }}
                     className="relative z-10 w-full object-contain rounded-2xl"
