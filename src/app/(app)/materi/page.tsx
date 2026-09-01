@@ -71,7 +71,7 @@ export default function Dashboard() {
       {/* Top Banner / Welcome */}
       <div className="max-w-6xl mx-auto px-6 py-10">
         <header className="mb-10">
-          <h1 className="text-3xl font-bold text-slate-900">Halo Vicent!</h1>
+          <h1 className="text-3xl font-bold text-slate-900">Halo {user.full_name || user.email?.split('@')[0] || 'User'}!</h1>
           <p className="text-slate-500 mt-1">Selamat datang kembali di beranda</p>
         </header>
 
