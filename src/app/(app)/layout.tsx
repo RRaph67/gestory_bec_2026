@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "@/components/organisms/Header";
 import MockProvider from "@/components/mocks/MockProvider";
 import { AuthProvider } from "@/hooks/useAuth";
+import { ChatWidget } from "@/components/organisms/ChatWidget";
 
 export default function AppLayout({
   children,
@@ -15,6 +16,7 @@ export default function AppLayout({
           <Header />
           <div className="flex-1 pt-20">{children}</div>
         </div>
+        <ChatWidget />
       </AuthProvider>
     </MockProvider>
   );

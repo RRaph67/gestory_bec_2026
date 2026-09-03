@@ -261,7 +261,7 @@ export const mockCourseDetails: Record<string, CourseDetailResponse> = {
           title: "Ringkasan Bab 3",
           content:
             "Kongres Pemuda II pada 28 Oktober 1928 menghasilkan Sumpah Pemuda yang menjadi dasar persatuan bangsa Indonesia. Peristiwa ini merupakan momen krusial dalam perjalanan menuju kemerdekaan.",
-          url: "/material/Sumpah_Pemuda.pptx",
+          url: "/material/Sumpah_Pemuda.pdf",
         },
         {
           type: "video",

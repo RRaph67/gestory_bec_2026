@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { usePathname } from "next/navigation";
 import { RefreshCcw, X } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { ChatWindowMessage } from "../../molecules/ChatMessage";
@@ -18,7 +17,6 @@ interface Message {
 
 export const ChatWidget = () => {
   // ── 1. Hooks ───────────────────────────────────────────
-  const pathname = usePathname();
   const { user, loading: authLoading } = useAuth();
   const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -105,10 +103,11 @@ export const ChatWidget = () => {
   };
 
   // ── 4. Conditional Rendering (After all hooks) ───────────
+  // ChatWidget only renders inside (app)/layout which has AuthProvider,
+  // so useAuth() always returns reliable context (no fallback).
   if (!isMounted) return null;
-  if (pathname === "/play") return null;
   if (authLoading) return null;
-  if (!user) return null; // ← Hide FAB when not logged in
+  if (!user) return null;
 
   return (
     <div className="fixed bottom-5 right-5 z-100 font-sans">

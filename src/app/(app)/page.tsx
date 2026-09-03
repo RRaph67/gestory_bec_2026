@@ -117,7 +117,6 @@ export default function LandingPage() {
             <img
               src="/assets/images/atas1.png"
               alt="Anak-anak belajar dengan gembira menggunakan Gestory"
-              style={{ backgroundColor: '#ffffff' }}
               className="relative z-10 w-full max-w-lg object-contain rounded-3xl"
             />
           </div>

@@ -17,8 +17,6 @@ export const metadata: Metadata = {
   },
 };
 
-import { ChatWidget } from "@/components/organisms/ChatWidget";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +26,6 @@ export default function RootLayout({
     <html lang="id" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {children}
-        <ChatWidget />
       </body>
     </html>
   );
